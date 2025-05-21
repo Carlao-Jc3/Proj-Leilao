@@ -25,13 +25,14 @@ public class ProdutosDAO {
     public void cadastrarProduto (ProdutosDTO produto){
         
         
-        //conn = new conectaDAO().connectDB();
+        conn = new conectaDAO().connectDB();
         
         
     }
     
     public ArrayList<ProdutosDTO> listarProdutos(){
-        
+        ProdutosDTO p = new ProdutosDTO(10, "RTX 3090", 5000,"A venda");
+        listagem.add(p);
         return listagem;
     }
     
