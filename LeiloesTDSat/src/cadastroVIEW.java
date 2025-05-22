@@ -5,7 +5,7 @@
 
 /**
  *
- * @author Adm
+ * @author Carlos Eduardo
  */
 public class cadastroVIEW extends javax.swing.JFrame {
 

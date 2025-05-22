@@ -5,14 +5,21 @@
 
 /**
  *
- * @author Adm
+ * @author Carlos Eduardo Henrique Garibaldi
+ */
+/*
+Método construtor
  */
 public class ProdutosDTO {
+
     private Integer id;
     private String nome;
     private Integer valor;
     private String status;
 
+    /*
+    Método construtor vazio
+     */
     public ProdutosDTO() {
     }
 
@@ -22,7 +29,7 @@ public class ProdutosDTO {
         this.valor = valor;
         this.status = status;
     }
-    
+
     public Integer getId() {
         return id;
     }
@@ -43,10 +50,6 @@ public class ProdutosDTO {
         this.id = id;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public void setValor(Integer valor) {
         this.valor = valor;
     }
@@ -54,5 +57,25 @@ public class ProdutosDTO {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
+    /**
+     * Define o nome do produto com validações.
+     *
+     * @param nome Nome a ser definido.
+     * @throws IllegalArgumentException se o nome for nulo, vazio, maior que 100
+     * caracteres ou contiver caracteres inválidos.
+     */
+    public void setNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do produto não pode ser vazio!");
+        }
+        if (nome.length() > 100) {
+            throw new IllegalArgumentException("O nome do produto não pode exceder 100 caracteres!");
+        }
+        if (!nome.matches("^[a-zA-Z0-9\\s]+$")) {
+            throw new IllegalArgumentException("O nome do produto deve conter apenas letras, números e espaços!");
+        }
+        this.nome = nome.trim();
+    }
+
 }
