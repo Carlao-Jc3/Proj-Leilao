@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Classe responsável por acessar e manipular dados da tabela produto no banco
@@ -86,6 +87,24 @@ public class ProdutosDAO {
             stmt.setInt(4, produto.getId());
             stmt.executeUpdate();
         }
+    }
+
+    void listarTodos() {
+        List<ProdutosDTO> produtos = new ArrayList<>();
+        String sql = "SELECT * FROM filmes";
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(rs.getInt("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setValor("valor");
+                produto.setCategoria(rs.getString("categoria"));
+                produtos.add(produto);
+            }
+        }
+        return filmes;
     }
 }
 

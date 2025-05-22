@@ -157,14 +157,14 @@ public class cadastroVIEW extends javax.swing.JFrame {
             return;
         }
         try {
-        //ProdutosDAO produtodao = new ProdutosDAO();
+        ProdutosDAO produtodao = new ProdutosDAO();
         produto.setNome(nome);
         produto.setValor(Integer.valueOf(valor));
         produto.setStatus(status);
         produtodao.cadastrarProduto(produto);
-        JOptionPane.showMessageDialog(this, "Filme cadastrado com sucesso!");
+        JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Não foi possível cadastrar o filme: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Não foi possível cadastrar o produto: " + e.getMessage());
         }
         
     }//GEN-LAST:event_btnCadastrarActionPerformed

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
+import java.util.List;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -15,6 +16,7 @@ import java.sql.SQLException;
  */
 public class listagemVIEW extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
+    private ProdutosDAO produtodao;
 
     /**
      * Creates new form listagemVIEW
@@ -167,9 +169,9 @@ public class listagemVIEW extends javax.swing.JFrame {
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
-    
+
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        /*int selectedRow = listaProdutos.getSelectedRow();
+        int selectedRow = listaProdutos.getSelectedRow();
         if( selectedRow == -1){
             JOptionPane.showMessageDialog(this, "Selecione um produto da tabela para excluir");
             return;
@@ -179,14 +181,14 @@ public class listagemVIEW extends javax.swing.JFrame {
         if (confirm == JOptionPane.YES_OPTION){
             try{
                 int id = (Integer) tableModel.getValueAt(selectedRow, 0);
-                ProdutosDAO.excluir(id);
+                produtodao.excluir(id);
                 JOptionPane.showMessageDialog(this, "Produto excluido com sucesso!");
                 atualizarTabela(null); // Atualiza a tabela
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Não foi possível excluir o filme: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Não foi possível excluir o produto: " + e.getMessage());
             }
             
-        }*/
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
     
     /**
@@ -258,5 +260,10 @@ public class listagemVIEW extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     
+    }
+
+    private void atualizarTabela(Object object) {
+       tableModel.setRowCount(0); // Limpa a tabela
+       produtodao.listarTodos()
     }
 }
