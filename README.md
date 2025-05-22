@@ -14,6 +14,6 @@ Realizar o cadastro de Itens de uma casa de leilões
   Em andamento...
 
 ## tecnologias usadas
-  - Java Maven
+  - Java Ant
   - MySQL
   - JDK 17
