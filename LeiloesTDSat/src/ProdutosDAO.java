@@ -12,8 +12,6 @@ import java.sql.SQLException;
  */
 public class ProdutosDAO {
 
-    ArrayList<ProdutosDTO> listagem = new ArrayList<>();
-
     public void cadastrarProduto(ProdutosDTO produto) throws SQLException {
         if (produto == null) {
             throw new IllegalArgumentException("Produto não pode ser nulo!");
@@ -28,8 +26,7 @@ public class ProdutosDAO {
             throw new IllegalArgumentException("O status do produto não pode ser vazio!");
         }
         String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
-        try (Connection conn = conectaDAO.connectDB();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = conectaDAO.connectDB(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, produto.getNome());
             stmt.setInt(2, produto.getValor());
             stmt.setString(3, produto.getStatus());
@@ -42,9 +39,24 @@ public class ProdutosDAO {
     }
 
     public ArrayList<ProdutosDTO> listarProdutos() {
-        ProdutosDTO p = new ProdutosDTO(10, "RTX 3090", 5000, "A venda");
-        listagem.add(p);
-        return listagem;
+        ArrayList<ProdutosDTO> produtos = new ArrayList<>();
+        String sql = "SELECT * FROM produtos";
+        try (Connection conn = conectaDAO.connectDB(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                ProdutosDTO p = new ProdutosDTO();
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("nome"));
+                p.setValor(rs.getInt("valor"));
+                p.setStatus(rs.getString("status"));
+                produtos.add(p);
+            }
+            if (produtos.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Nenhum produto encontrado!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao listar produtos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        return produtos;
     }
 
 }
