@@ -2,6 +2,7 @@
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
+import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.sql.SQLException;
@@ -59,4 +60,33 @@ public class ProdutosDAO {
         return produtos;
     }
 
+    public void excluir(int id) throws SQLException {
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID inválido! Deve ser maior que zero");
+        }
+        String sql = "DELETE FROM filmes WHERE id = ?";
+        try (Connection conn = conectaDAO.connectDB(); 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+        
+    }
+    public void atualizar(ProdutosDTO produto) throws SQLException {
+        if (produto == null || produto.getId() <= 0 || produto.getNome() == null || produto.getNome().trim().isEmpty() ||
+            produto.getValor() == null || produto.getValor() == null || produto.getStatus().trim().isEmpty()) {
+            throw new IllegalArgumentException("Dados do produto inválidos: Nome e valor são obrigatórios.");
+        }
+        String sql = "UPDATE filmes SET nome = ?, valor = ?, sttatus = ? WHERE id = ?";
+        try (Connection conn = conectaDAO.connectDB();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, produto.getNome());
+            stmt.setInt(2, produto.getValor());
+            stmt.setString(3, produto.getStatus());
+            stmt.setInt(4, produto.getId());
+            stmt.executeUpdate();
+        }
+    }
 }
+
+
