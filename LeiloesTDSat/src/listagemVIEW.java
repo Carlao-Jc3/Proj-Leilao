@@ -262,8 +262,8 @@ public class listagemVIEW extends javax.swing.JFrame {
     
     }
 
-    private void atualizarTabela(Object object) {
+    private void atualizarTabela(Object object) throws SQLException {
        tableModel.setRowCount(0); // Limpa a tabela
-       produtodao.listarTodos()
+       produtodao.listarTodos();
     }
 }

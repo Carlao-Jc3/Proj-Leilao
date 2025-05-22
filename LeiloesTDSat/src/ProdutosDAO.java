@@ -89,22 +89,22 @@ public class ProdutosDAO {
         }
     }
 
-    void listarTodos() {
+    public List<ProdutosDTO> listarTodos() throws SQLException{
         List<ProdutosDTO> produtos = new ArrayList<>();
         String sql = "SELECT * FROM filmes";
-        try (Connection conn = Conexao.getConnection();
+        try (Connection conn = conectaDAO.connectDB();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 ProdutosDTO produto = new ProdutosDTO();
                 produto.setId(rs.getInt("id"));
                 produto.setNome(rs.getString("nome"));
-                produto.setValor("valor");
-                produto.setCategoria(rs.getString("categoria"));
+                produto.setValor(rs.getInt("valor"));
+                produto.setStatus(rs.getString("categoria"));
                 produtos.add(produto);
             }
         }
-        return filmes;
+        return produtos;
     }
 }
 
