@@ -27,7 +27,7 @@ public class ProdutosDAO {
         if (produto.getStatus() == null || produto.getStatus().trim().isEmpty()) {
             throw new IllegalArgumentException("O status do produto não pode ser vazio!");
         }
-        String sql = "INSERT INTO filmes (nome, valor, status) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
         try (Connection conn = conectaDAO.connectDB();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, produto.getNome());
