@@ -1,3 +1,7 @@
+
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -8,6 +12,8 @@
  * @author Carlos Eduardo
  */
 public class cadastroVIEW extends javax.swing.JFrame {
+
+    private ProdutosDAO produtodao;
 
     /**
      * Creates new form cadastroVIEW
@@ -44,7 +50,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
         jLabel3.setText("Cadastre um novo produto");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("Nome:");
+        jLabel4.setText("Produto:");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Valor:");
@@ -92,11 +98,11 @@ public class cadastroVIEW extends javax.swing.JFrame {
                             .addGap(202, 202, 202)
                             .addComponent(jLabel3))
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(72, 72, 72)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel5))
-                            .addGap(31, 31, 31)
+                            .addGap(85, 85, 85)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel4))
+                            .addGap(18, 18, 18)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(cadastroNome)
                                 .addComponent(cadastroValor, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)))
@@ -144,12 +150,22 @@ public class cadastroVIEW extends javax.swing.JFrame {
         String nome = cadastroNome.getText();
         String valor = cadastroValor.getText();
         String status = "A Venda";
-        produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
         
-        ProdutosDAO produtodao = new ProdutosDAO();
+        //Validação dos campos
+        if (nome.isEmpty() || valor.isEmpty() || status.equals("Escolha um...")) {
+            JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos!");
+            return;
+        }
+        try {
+        //ProdutosDAO produtodao = new ProdutosDAO();
+        produto.setNome(nome);
+        produto.setValor(Integer.valueOf(valor));
+        produto.setStatus(status);
         produtodao.cadastrarProduto(produto);
+        JOptionPane.showMessageDialog(this, "Filme cadastrado com sucesso!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Não foi possível cadastrar o filme: " + e.getMessage());
+        }
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
 

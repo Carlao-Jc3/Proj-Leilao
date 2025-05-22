@@ -167,9 +167,9 @@ public class listagemVIEW extends javax.swing.JFrame {
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
-    /*
+    
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        int selectedRow = listaProdutos.getSelectedRow();
+        /*int selectedRow = listaProdutos.getSelectedRow();
         if( selectedRow == -1){
             JOptionPane.showMessageDialog(this, "Selecione um produto da tabela para excluir");
             return;
@@ -186,9 +186,9 @@ public class listagemVIEW extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Não foi possível excluir o filme: " + e.getMessage());
             }
             
-        }
+        }*/
     }//GEN-LAST:event_btnExcluirActionPerformed
-    */
+    
     /**
      * @param args the command line arguments
      */

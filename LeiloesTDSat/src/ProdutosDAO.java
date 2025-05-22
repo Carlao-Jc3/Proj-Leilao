@@ -64,7 +64,7 @@ public class ProdutosDAO {
         if (id <= 0) {
             throw new IllegalArgumentException("ID inválido! Deve ser maior que zero");
         }
-        String sql = "DELETE FROM filmes WHERE id = ?";
+        String sql = "DELETE FROM produtos WHERE id = ?";
         try (Connection conn = conectaDAO.connectDB(); 
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -77,7 +77,7 @@ public class ProdutosDAO {
             produto.getValor() == null || produto.getValor() == null || produto.getStatus().trim().isEmpty()) {
             throw new IllegalArgumentException("Dados do produto inválidos: Nome e valor são obrigatórios.");
         }
-        String sql = "UPDATE filmes SET nome = ?, valor = ?, sttatus = ? WHERE id = ?";
+        String sql = "UPDATE produtos SET nome = ?, valor = ?, sttatus = ? WHERE id = ?";
         try (Connection conn = conectaDAO.connectDB();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, produto.getNome());
