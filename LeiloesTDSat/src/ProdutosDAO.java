@@ -60,6 +60,27 @@ public class ProdutosDAO {
         }
         return produtos;
     }
+    public ArrayList<ProdutosDTO> listarProdutosVendas() {
+        ArrayList<ProdutosDTO> produtos = new ArrayList<>();
+        String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
+        try (Connection conn = conectaDAO.connectDB(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()){
+            while (rs.next()) {
+                ProdutosDTO p = new ProdutosDTO();
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("nome"));
+                p.setValor(rs.getInt("valor"));
+                p.setStatus(rs.getString("status"));
+                produtos.add(p);
+            }
+            
+            if (produtos.isEmpty()){
+                JOptionPane.showMessageDialog(null, "Nenhuma venda encontrada!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }catch (SQLException e){
+            JOptionPane.showMessageDialog(null, "Erro ao lista as vendas: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        return produtos;
+    }
 
     public void excluir(int id) throws SQLException {
         if (id <= 0) {
