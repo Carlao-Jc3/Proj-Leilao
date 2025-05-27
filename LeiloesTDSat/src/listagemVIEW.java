@@ -60,6 +60,15 @@ public class listagemVIEW extends javax.swing.JFrame {
                 "ID", "Nome", "Valor", "Status"
             }
         ));
+        listaProdutos.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                listaProdutosAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         jScrollPane1.setViewportView(listaProdutos);
 
         jLabel1.setFont(new java.awt.Font("Lucida Fax", 0, 18)); // NOI18N
@@ -153,12 +162,21 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
-
-        ProdutosDAO produtosdao = new ProdutosDAO();
-
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+        String idText = id_produto_venda.getText().trim();
+        if (idText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Digite o ID do produto para vender.");
+            return;
+        }
+        try {
+            int id = Integer.parseInt(idText);
+            produtodao.venderProdutos(id);
+            JOptionPane.showMessageDialog(this, "Produto vendido com sucesso!");
+            listarProdutos(); // Atualiza a tabela
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID inválido. Digite um número.");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao vender produto: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
@@ -191,6 +209,10 @@ public class listagemVIEW extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void listaProdutosAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_listaProdutosAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listaProdutosAncestorAdded
 
     /**
      * @param args the command line arguments

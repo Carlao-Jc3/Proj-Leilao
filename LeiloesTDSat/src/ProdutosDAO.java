@@ -40,10 +40,12 @@ public class ProdutosDAO {
         }
     }
 
-    public ArrayList<ProdutosDTO> listarProdutos() {
+    public ArrayList<ProdutosDTO> listarProdutos() { 
         ArrayList<ProdutosDTO> produtos = new ArrayList<>();
         String sql = "SELECT * FROM produtos";
-        try (Connection conn = conectaDAO.connectDB(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = conectaDAO.connectDB(); 
+            PreparedStatement stmt = conn.prepareStatement(sql); 
+            ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 ProdutosDTO p = new ProdutosDTO();
                 p.setId(rs.getInt("id"));
@@ -64,7 +66,8 @@ public class ProdutosDAO {
     public ArrayList<ProdutosDTO> listarProdutosVendas() {
         ArrayList<ProdutosDTO> produtos = new ArrayList<>();
         String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
-        try (Connection conn = conectaDAO.connectDB(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = conectaDAO.connectDB(); PreparedStatement stmt = conn.prepareStatement(sql); 
+            ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 ProdutosDTO p = new ProdutosDTO();
                 p.setId(rs.getInt("id"));
@@ -84,10 +87,14 @@ public class ProdutosDAO {
     }
 
     public void venderProdutos(int id) throws SQLException {
-        String query = "UPDATE produtos SET status = 'vendido' WHERE id = ? AND status = 'A venda'";
+        String query = "UPDATE produtos SET status = 'vendido' WHERE id = ? AND status = 'A Venda'";
         try (Connection conn = conectaDAO.connectDB();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-
+            stmt.setInt(1, id);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Produto não encontrado ou já vendido.");
+            }
         }
     }
 
