@@ -24,6 +24,9 @@ public class vendasVIEW extends javax.swing.JFrame {
      */
     public vendasVIEW() {
         initComponents();
+        produtodao = new ProdutosDAO();
+        tableModel = (DefaultTableModel) tblVendas.getModel();
+        listarProdutosVendas();
         
     }
 

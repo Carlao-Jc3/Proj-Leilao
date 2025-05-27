@@ -60,10 +60,11 @@ public class ProdutosDAO {
         }
         return produtos;
     }
+
     public ArrayList<ProdutosDTO> listarProdutosVendas() {
         ArrayList<ProdutosDTO> produtos = new ArrayList<>();
         String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
-        try (Connection conn = conectaDAO.connectDB(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()){
+        try (Connection conn = conectaDAO.connectDB(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 ProdutosDTO p = new ProdutosDTO();
                 p.setId(rs.getInt("id"));
@@ -72,14 +73,22 @@ public class ProdutosDAO {
                 p.setStatus(rs.getString("status"));
                 produtos.add(p);
             }
-            
-            if (produtos.isEmpty()){
+
+            if (produtos.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Nenhuma venda encontrada!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao lista as vendas: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
         return produtos;
+    }
+
+    public void venderProdutos(int id) throws SQLException {
+        String query = "UPDATE produtos SET status = 'vendido' WHERE id = ? AND status = 'A venda'";
+        try (Connection conn = conectaDAO.connectDB();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        }
     }
 
     public void excluir(int id) throws SQLException {
@@ -88,20 +97,20 @@ public class ProdutosDAO {
         }
         String sql = "DELETE FROM produtos WHERE id = ?";
         try (Connection conn = conectaDAO.connectDB(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
-        
+
     }
+
     public void atualizar(ProdutosDTO produto) throws SQLException {
-        if (produto == null || produto.getId() <= 0 || produto.getNome() == null || produto.getNome().trim().isEmpty() ||
-            produto.getValor() == null || produto.getValor() == null || produto.getStatus().trim().isEmpty()) {
+        if (produto == null || produto.getId() <= 0 || produto.getNome() == null || produto.getNome().trim().isEmpty()
+                || produto.getValor() == null || produto.getValor() == null || produto.getStatus().trim().isEmpty()) {
             throw new IllegalArgumentException("Dados do produto inválidos: Nome e valor são obrigatórios.");
         }
         String sql = "UPDATE produtos SET nome = ?, valor = ?, sttatus = ? WHERE id = ?";
-        try (Connection conn = conectaDAO.connectDB();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = conectaDAO.connectDB(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, produto.getNome());
             stmt.setInt(2, produto.getValor());
             stmt.setString(3, produto.getStatus());
@@ -110,23 +119,19 @@ public class ProdutosDAO {
         }
     }
 
-    public List<ProdutosDTO> listarTodos() throws SQLException{
+    public List<ProdutosDTO> listarTodos() throws SQLException {
         List<ProdutosDTO> produtos = new ArrayList<>();
-        String sql = "SELECT * FROM filmes";
-        try (Connection conn = conectaDAO.connectDB();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        String sql = "SELECT * FROM produtos";
+        try (Connection conn = conectaDAO.connectDB(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 ProdutosDTO produto = new ProdutosDTO();
                 produto.setId(rs.getInt("id"));
                 produto.setNome(rs.getString("nome"));
                 produto.setValor(rs.getInt("valor"));
-                produto.setStatus(rs.getString("categoria"));
+                produto.setStatus(rs.getString("status"));
                 produtos.add(produto);
             }
         }
         return produtos;
     }
 }
-
-
