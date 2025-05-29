@@ -172,10 +172,13 @@ public class listagemVIEW extends javax.swing.JFrame {
             produtodao.venderProdutos(id);
             JOptionPane.showMessageDialog(this, "Produto vendido com sucesso!");
             listarProdutos(); // Atualiza a tabela
+            id_produto_venda.setText("");
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ID inválido. Digite um número.");
+            id_produto_venda.setText("");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Erro ao vender produto: " + e.getMessage());
+            id_produto_venda.setText("");
         }
     }//GEN-LAST:event_btnVenderActionPerformed
 

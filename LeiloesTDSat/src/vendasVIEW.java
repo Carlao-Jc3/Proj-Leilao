@@ -1,5 +1,9 @@
+
+import com.sun.jdi.connect.spi.Connection;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -9,7 +13,6 @@ import java.util.logging.Logger;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Carlos Eduardo
@@ -27,7 +30,7 @@ public class vendasVIEW extends javax.swing.JFrame {
         produtodao = new ProdutosDAO();
         tableModel = (DefaultTableModel) tblVendas.getModel();
         listarProdutosVendas();
-        
+
     }
 
     /**
@@ -145,15 +148,19 @@ public class vendasVIEW extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnVoltarActionPerformed
+
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int selectedRow = tblVendas.getSelectedRow();
-        if( selectedRow == -1){
+        if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Selecione um produto da tabela para excluir");
             return;
         }
 
-        int confirm =JOptionPane.showConfirmDialog(this, "Deseja realmente excluir este produto?", "Confirmação", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION){
+        int confirm = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir este produto?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
             int id = (Integer) tableModel.getValueAt(selectedRow, 0);
             try {
                 produtodao.excluir(id);
@@ -167,12 +174,38 @@ public class vendasVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnPesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesActionPerformed
+        String idTexto = txtPes.getText().trim();
+        if (idTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Digite um ID para pesquisar.");
+            return;
+        }
 
+        try {
+            int id = Integer.parseInt(idTexto); // Valida se é um número
+            tableModel.setRowCount(0); // Limpa a tabela
+            String sql = "SELECT id, nome, valor, status FROM produtos WHERE id = ?";
+            try (java.sql.Connection conn = conectaDAO.connectDB()) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, id);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    tableModel.addRow(new Object[]{
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDouble("valor"),
+                        rs.getString("status")
+                    });
+                } else {
+                    JOptionPane.showMessageDialog(this, "Nenhum produto encontrado com o ID: " + id);
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Erro ao pesquisar: " + e.getMessage());
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, digite um ID válido (número).");
+            listarProdutosVendas(); // Recarrega todos os produtos em caso de erro
+        }
     }//GEN-LAST:event_btnPesActionPerformed
-
-    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -236,16 +269,17 @@ public class vendasVIEW extends javax.swing.JFrame {
             });
         }
     }
-    private void listarProdutosVendas(){
+
+    private void listarProdutosVendas() {
         try {
             ProdutosDAO produtosdao = new ProdutosDAO();
-            
+
             DefaultTableModel model = (DefaultTableModel) tblVendas.getModel();
             model.setNumRows(0);
-            
+
             ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutosVendas();
-            
-            for(int i = 0; i < listagem.size(); i++){
+
+            for (int i = 0; i < listagem.size(); i++) {
                 model.addRow(new Object[]{
                     listagem.get(i).getId(),
                     listagem.get(i).getNome(),
@@ -255,7 +289,7 @@ public class vendasVIEW extends javax.swing.JFrame {
             }
         } catch (Exception e) {
         }
-    
+
     }
 
     /*private void atualizarTabela(Object object) throws SQLException {

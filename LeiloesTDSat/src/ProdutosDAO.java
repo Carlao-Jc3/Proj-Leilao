@@ -1,9 +1,10 @@
 
-import java.sql.PreparedStatement;
+
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.List;
@@ -85,7 +86,7 @@ public class ProdutosDAO {
         }
         return produtos;
     }
-
+   
     public void venderProdutos(int id) throws SQLException {
         String query = "UPDATE produtos SET status = 'vendido' WHERE id = ? AND status = 'A Venda'";
         try (Connection conn = conectaDAO.connectDB();
