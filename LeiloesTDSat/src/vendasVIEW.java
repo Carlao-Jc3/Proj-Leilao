@@ -157,15 +157,11 @@ public class vendasVIEW extends javax.swing.JFrame {
             int id = (Integer) tableModel.getValueAt(selectedRow, 0);
             try {
                 produtodao.excluir(id);
-            } catch (SQLException ex) {
-                Logger.getLogger(vendasVIEW.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            JOptionPane.showMessageDialog(this, "Produto excluido com sucesso!");
-            try {
                 atualizarTabela(null); // Atualiza a tabela
             } catch (SQLException ex) {
                 Logger.getLogger(vendasVIEW.class.getName()).log(Level.SEVERE, null, ex);
             }
+            JOptionPane.showMessageDialog(this, "Produto excluido com sucesso!");
 
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
@@ -228,8 +224,17 @@ public class vendasVIEW extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void atualizarTabela(Object object) throws SQLException {
-        tableModel.setRowCount(0); // Limpa a tabela
-       produtodao.listarTodos();
+        DefaultTableModel model = (DefaultTableModel) tblVendas.getModel();
+        model.setRowCount(0); // Limpa a tabela
+        ArrayList<ProdutosDTO> listagem = produtodao.listarProdutosVendas();
+        for (ProdutosDTO produto : listagem) {
+            model.addRow(new Object[]{
+                produto.getId(),
+                produto.getNome(),
+                produto.getValor(),
+                produto.getStatus()
+            });
+        }
     }
     private void listarProdutosVendas(){
         try {

@@ -163,11 +163,16 @@ public class cadastroVIEW extends javax.swing.JFrame {
         produto.setStatus(status);
         produtodao.cadastrarProduto(produto);
         JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
+        limpar();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Não foi possível cadastrar o produto: " + e.getMessage());
         }
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
+    public void limpar(){
+        cadastroNome.setText("");
+        cadastroValor.setText("");
+    }
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
         listagemVIEW listagem = new listagemVIEW(); 
