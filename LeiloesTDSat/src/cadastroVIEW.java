@@ -6,7 +6,6 @@ import javax.swing.JOptionPane;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Carlos Eduardo
@@ -141,41 +140,48 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cadastroNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroNomeActionPerformed
-        
-        
+
+
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         ProdutosDTO produto = new ProdutosDTO();
+        /*
+        Strings que recebem o valor dos campos para validar o conteúdo
+         */
         String nome = cadastroNome.getText();
         String valor = cadastroValor.getText();
         String status = "A Venda";
-        
+
         //Validação dos campos
         if (nome.isEmpty() || valor.isEmpty() || status.equals("Escolha um...")) {
             JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos!");
             return;
         }
         try {
-        ProdutosDAO produtodao = new ProdutosDAO();
-        produto.setNome(nome);
-        produto.setValor(Integer.valueOf(valor));
-        produto.setStatus(status);
-        produtodao.cadastrarProduto(produto);
-        JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
-        limpar();
+            ProdutosDAO produtodao = new ProdutosDAO();
+            produto.setNome(nome);
+            produto.setValor(Integer.valueOf(valor));
+            produto.setStatus(status);
+            /**
+            * @param produto objeto com as info compactadas para o método cadastrarProduto()
+            */
+            produtodao.cadastrarProduto(produto);
+            JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
+            limpar();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Não foi possível cadastrar o produto: " + e.getMessage());
         }
-        
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
-    public void limpar(){
+    //Método para limpar os campos depois do cadastro
+    public void limpar() {
         cadastroNome.setText("");
         cadastroValor.setText("");
     }
-
+    //Transferência da tela cadastro para a tela de listagem
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
-        listagemVIEW listagem = new listagemVIEW(); 
+        listagemVIEW listagem = new listagemVIEW();
         listagem.setVisible(true);
     }//GEN-LAST:event_btnProdutosActionPerformed
 
